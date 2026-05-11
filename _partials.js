@@ -6,14 +6,14 @@
 const NAV_HTML = `
 <nav class="navbar">
   <div class="nav-inner">
-    <a class="nav-logo" href="#home">CW://</a>
+    <a class="nav-logo" href="#home">cwcx://</a>
     <div class="nav-links">
-      <a href="#about"          data-nav-anchor="about">/about</a>
-      <a href="#write-ups"      data-nav-anchor="write-ups">/write-ups</a>
-      <a href="#experience"     data-nav-anchor="experience">/experience</a>
-      <a href="#certifications" data-nav-anchor="certifications">/certifications</a>
-      <a href="#skills"         data-nav-anchor="skills">/skills</a>
-      <a href="#contact"        data-nav-anchor="contact">/contact</a>
+      <a href="#about"          data-nav-anchor="about">./about</a>
+      <a href="#write-ups"      data-nav-anchor="write-ups">./write-ups</a>
+      <a href="#experience"     data-nav-anchor="experience">./experience</a>
+      <a href="#certifications" data-nav-anchor="certifications">./certifications</a>
+      <a href="#skills"         data-nav-anchor="skills">./skills</a>
+      <a href="#contact"        data-nav-anchor="contact">./contact</a>
     </div>
     <div class="nav-hamburger" aria-label="menu">
       <span></span><span></span><span></span>
@@ -21,19 +21,19 @@ const NAV_HTML = `
   </div>
 </nav>
 <div class="mobile-drawer">
-  <a href="#about"          data-nav-anchor="about">/about</a>
-  <a href="#write-ups"      data-nav-anchor="write-ups">/write-ups</a>
-  <a href="#experience"     data-nav-anchor="experience">/experience</a>
-  <a href="#certifications" data-nav-anchor="certifications">/certifications</a>
-  <a href="#skills"         data-nav-anchor="skills">/skills</a>
-  <a href="#contact"        data-nav-anchor="contact">/contact</a>
+  <a href="#about"          data-nav-anchor="about">./about</a>
+  <a href="#write-ups"      data-nav-anchor="write-ups">./write-ups</a>
+  <a href="#experience"     data-nav-anchor="experience">./experience</a>
+  <a href="#certifications" data-nav-anchor="certifications">./certifications</a>
+  <a href="#skills"         data-nav-anchor="skills">./skills</a>
+  <a href="#contact"        data-nav-anchor="contact">./contact</a>
 </div>
 `;
 
 const FOOTER_HTML = `
 <footer>
   <div class="footer-inner">
-    <div><span class="logo">CW://</span> CHARLES WYATT &copy; 2025</div>
+    <div><span class="logo">cwcx://</span> CHARLES WYATT &copy; 2025</div>
     <div class="footer-right">SECURED BY DEFAULT // AI-ASSISTED ANALYSIS</div>
   </div>
 </footer>
