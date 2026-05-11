@@ -1185,7 +1185,7 @@ footer {
   color: var(--green);
   margin-bottom: 1rem;
 }
-.skills-label + .skills-label { margin-top: 1.75rem; }
+.tools-row + .skills-label { margin-top: 2.25rem; }
 
 .comp-list {
   list-style: none;
