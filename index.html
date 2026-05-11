@@ -11,6 +11,7 @@
 <body data-page="home">
   <div id="nav-mount"></div>
 
+  <!-- ============== HERO ============== -->
   <section id="home" class="hero">
     <div class="hero-inner">
       <div class="boot">
@@ -29,10 +30,10 @@
       </div>
 
       <div class="cmd-stack">
-        <a href="contact.html" class="cmd-btn fade-on-load" style="--load-delay:4.0s">
+        <a href="#contact" class="cmd-btn fade-on-load" style="--load-delay:4.0s">
           <span class="pr">$ </span><span class="cmd">./contact</span><span class="arg"> --open</span>
         </a>
-        <a href="write-ups.html" class="cmd-btn fade-on-load" style="--load-delay:4.2s">
+        <a href="#write-ups" class="cmd-btn fade-on-load" style="--load-delay:4.2s">
           <span class="pr">$ </span><span class="cmd">./writeups</span><span class="arg"> --browse</span>
         </a>
       </div>
@@ -41,6 +42,308 @@
         <div class="stat"><div class="n">11</div><div class="lbl">Certifications</div></div>
         <div class="stat"><div class="n">00</div><div class="lbl">Write-ups</div></div>
         <div class="stat"><div class="n">08</div><div class="lbl">Core Skills</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== 01 // ABOUT ============== -->
+  <section id="about" style="padding-top:7rem;">
+    <div class="wrap">
+      <header class="section-head reveal">
+        <div class="section-eyebrow">01 //</div>
+        <h2 class="section-title">ABOUT<span class="glow-green" style="color:var(--green)">_ME</span></h2>
+        <div class="gradient-line"></div>
+      </header>
+
+      <div class="about-grid">
+        <div class="term-card reveal">
+          <div class="term-bar">
+            <span class="dot r"></span><span class="dot p"></span><span class="dot g"></span>
+            <span class="fname">about_charles.md</span>
+          </div>
+          <div class="term-body">
+            <p>
+              Charles Wyatt is a cybersecurity analyst and AI-fluent practitioner based in
+              the Philippines. Certified across the Google Cybersecurity Professional track
+              with additional credentials from Anthropic and DataCamp, I bridge foundational
+              security disciplines with modern AI tooling. My focus is detection, response,
+              and building systems that think.
+            </p>
+            <span class="prompt">$ cat philosophy.txt</span>
+            <p class="quote">"Security is not a product. It's a process — and I'm building the automation layer on top of it."</p>
+          </div>
+        </div>
+
+        <div class="stat-cards">
+          <div class="stat-card reveal delay-1">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <div class="label">Network Defense</div>
+          </div>
+          <div class="stat-card reveal delay-2">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+            <div class="label">AI Tooling</div>
+          </div>
+          <div class="stat-card reveal delay-3">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            <div class="label">Threat Analysis</div>
+          </div>
+          <div class="stat-card reveal delay-4">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <div class="label">Security Arch.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== 02 // WRITE-UPS ============== -->
+  <section id="write-ups" style="padding-top:7rem;">
+    <div class="wrap">
+      <header class="section-head reveal">
+        <div class="section-eyebrow">02 //</div>
+        <h2 class="section-title">WRITE<span class="glow-green" style="color:var(--green)">_UPS</span></h2>
+        <div class="gradient-line"></div>
+        <p style="margin-top:1.25rem; font-family:var(--font-body); color:var(--muted); max-width:60ch; line-height:1.6;">
+          Hands-on investigations from SOC simulations, malware analysis, and threat-hunting labs.
+        </p>
+      </header>
+
+      <!-- Category filter -->
+      <div class="filter-row reveal" data-filter-group="#writeup-table">
+        <span class="lead">cat:</span>
+        <button class="filter-btn active" data-filter="ALL">[ALL]</button>
+        <button class="filter-btn" data-filter="FORENSICS">[FORENSICS]</button>
+        <button class="filter-btn" data-filter="MALWARE">[MALWARE/IR]</button>
+        <button class="filter-btn" data-filter="THREAT">[THREAT INTEL]</button>
+        <button class="filter-btn" data-filter="LOG">[LOG ANALYSIS]</button>
+        <button class="filter-btn" data-filter="SOC">[SOC SIM]</button>
+      </div>
+
+      <!-- Difficulty filter -->
+      <div class="filter-row reveal">
+        <span class="lead">diff:</span>
+        <button class="filter-btn active" data-filter="ALL">[ALL]</button>
+        <button class="filter-btn" data-filter="VERY-EASY">[VERY EASY]</button>
+        <button class="filter-btn" data-filter="EASY">[EASY]</button>
+        <button class="filter-btn" data-filter="MEDIUM">[MEDIUM]</button>
+        <button class="filter-btn" data-filter="HARD">[HARD]</button>
+      </div>
+
+      <!-- Empty state -->
+      <div id="writeup-table" class="reveal" style="
+        border:1px dashed var(--border);
+        padding:5rem 2rem;
+        text-align:center;
+        font-family:var(--font-mono);
+        margin-top:1rem;
+      ">
+        <div style="font-size:0.78rem; letter-spacing:0.22em; color:var(--green); margin-bottom:1rem;">
+          // NO_ENTRIES_YET
+        </div>
+        <div style="font-family:var(--font-body); color:var(--muted); font-size:1.05rem; line-height:1.6; max-width:38ch; margin:0 auto;">
+          Write-ups incoming. Lab reports from TryHackMe, HTB, and personal investigations will land here as they're finished.
+        </div>
+        <div style="margin-top:1.75rem; font-size:0.72rem; letter-spacing:0.18em; color:var(--muted-dim);">
+          $ <span style="color:var(--green);">ls</span> ./writeups
+          <br/>
+          <span style="color:var(--muted-dim);">total 0</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== 03 // EXPERIENCE ============== -->
+  <section id="experience" style="padding-top:7rem;">
+    <div class="wrap">
+      <header class="section-head reveal">
+        <div class="section-eyebrow">03 //</div>
+        <h2 class="section-title">EXPERI<span class="glow-green" style="color:var(--green)">ENCE</span></h2>
+        <div class="gradient-line"></div>
+        <p style="margin-top:1.25rem; font-family:var(--font-body); color:var(--muted); max-width:60ch; line-height:1.6;">
+          Education, training, and applied work — past and ongoing.
+        </p>
+      </header>
+
+      <div class="reveal" style="
+        border:1px dashed var(--border);
+        padding:5rem 2rem;
+        text-align:center;
+        font-family:var(--font-mono);
+        margin-top:1rem;
+      ">
+        <div style="font-size:0.78rem; letter-spacing:0.22em; color:var(--green); margin-bottom:1rem;">
+          // NO_ENTRIES_YET
+        </div>
+        <div style="font-family:var(--font-body); color:var(--muted); font-size:1.05rem; line-height:1.6; max-width:38ch; margin:0 auto;">
+          Experience entries incoming.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== 04 // CERTIFICATIONS ============== -->
+  <section id="certifications" style="padding-top:7rem;">
+    <div class="wrap">
+      <header class="section-head reveal">
+        <div class="section-eyebrow">04 //</div>
+        <h2 class="section-title">CERTIFI<span class="glow-green" style="color:var(--green)">CATIONS</span></h2>
+        <div class="gradient-line"></div>
+      </header>
+
+      <div class="filter-row reveal" data-filter-group="#cert-grid">
+        <span class="lead">cat:</span>
+        <button class="filter-btn active" data-filter="ALL">[ALL <span class="count">11</span>]</button>
+        <button class="filter-btn" data-filter="SECURITY">[SECURITY <span class="count">9</span>]</button>
+        <button class="filter-btn" data-filter="AI">[AI <span class="count">2</span>]</button>
+      </div>
+
+      <div id="cert-grid" class="cert-grid">
+        <a href="certs/foundations-of-cybersecurity.pdf" target="_blank" rel="noopener" class="cert-card reveal" data-cat="SECURITY">
+          <div class="cert-head"><span class="cert-tag sec">SECURITY</span><span class="cert-issuer">Google · Jan 2024</span></div>
+          <div class="cert-title">Foundations of Cybersecurity</div>
+          <div class="cert-foot"><span class="cert-cta">VIEW CERTIFICATE →</span></div>
+        </a>
+        <a href="certs/manage-security-risks.pdf" target="_blank" rel="noopener" class="cert-card reveal delay-1" data-cat="SECURITY">
+          <div class="cert-head"><span class="cert-tag sec">SECURITY</span><span class="cert-issuer">Google · Feb 2024</span></div>
+          <div class="cert-title">Play It Safe: Manage Security Risks</div>
+          <div class="cert-foot"><span class="cert-cta">VIEW CERTIFICATE →</span></div>
+        </a>
+        <a href="certs/networks-and-network-security.pdf" target="_blank" rel="noopener" class="cert-card reveal delay-2" data-cat="SECURITY">
+          <div class="cert-head"><span class="cert-tag sec">SECURITY</span><span class="cert-issuer">Google · Mar 2024</span></div>
+          <div class="cert-title">Connect and Protect: Networks &amp; Network Security</div>
+          <div class="cert-foot"><span class="cert-cta">VIEW CERTIFICATE →</span></div>
+        </a>
+        <a href="certs/linux-and-sql.pdf" target="_blank" rel="noopener" class="cert-card reveal delay-3" data-cat="SECURITY">
+          <div class="cert-head"><span class="cert-tag sec">SECURITY</span><span class="cert-issuer">Google · Apr 2024</span></div>
+          <div class="cert-title">Tools of the Trade: Linux and SQL</div>
+          <div class="cert-foot"><span class="cert-cta">VIEW CERTIFICATE →</span></div>
+        </a>
+        <a href="certs/assets-threats-vulnerabilities.pdf" target="_blank" rel="noopener" class="cert-card reveal delay-4" data-cat="SECURITY">
+          <div class="cert-head"><span class="cert-tag sec">SECURITY</span><span class="cert-issuer">Google · May 2024</span></div>
+          <div class="cert-title">Assets, Threats, and Vulnerabilities</div>
+          <div class="cert-foot"><span class="cert-cta">VIEW CERTIFICATE →</span></div>
+        </a>
+        <a href="certs/detection-and-response.pdf" target="_blank" rel="noopener" class="cert-card reveal" data-cat="SECURITY">
+          <div class="cert-head"><span class="cert-tag sec">SECURITY</span><span class="cert-issuer">Google · Jun 2024</span></div>
+          <div class="cert-title">Sound the Alarm: Detection and Response</div>
+          <div class="cert-foot"><span class="cert-cta">VIEW CERTIFICATE →</span></div>
+        </a>
+        <a href="certs/automate-with-python.pdf" target="_blank" rel="noopener" class="cert-card reveal delay-1" data-cat="SECURITY">
+          <div class="cert-head"><span class="cert-tag sec">SECURITY</span><span class="cert-issuer">Google · Jul 2024</span></div>
+          <div class="cert-title">Automate Cybersecurity Tasks with Python</div>
+          <div class="cert-foot"><span class="cert-cta">VIEW CERTIFICATE →</span></div>
+        </a>
+        <a href="certs/google-cybersecurity.pdf" target="_blank" rel="noopener" class="cert-card reveal delay-2" data-cat="SECURITY">
+          <div class="cert-head"><span class="cert-tag sec">SECURITY</span><span class="cert-issuer">Google · Jul 2024</span></div>
+          <div class="cert-title">Google Cybersecurity Professional</div>
+          <div class="cert-foot"><span class="cert-cta">VIEW CERTIFICATE →</span></div>
+        </a>
+        <a href="certs/ai-datacamp.pdf" target="_blank" rel="noopener" class="cert-card ai reveal delay-3" data-cat="AI">
+          <div class="cert-head"><span class="cert-tag ai">AI</span><span class="cert-issuer">DataCamp · Aug 2024</span></div>
+          <div class="cert-title">Artificial Intelligence</div>
+          <div class="cert-foot"><span class="cert-cta">VIEW CERTIFICATE →</span></div>
+        </a>
+        <a href="certs/ai-fluency-framework.pdf" target="_blank" rel="noopener" class="cert-card ai reveal delay-4" data-cat="AI">
+          <div class="cert-head"><span class="cert-tag ai">AI</span><span class="cert-issuer">Anthropic · Sep 2024</span></div>
+          <div class="cert-title">AI Fluency Framework &amp; Foundations</div>
+          <div class="cert-foot"><span class="cert-cta">VIEW CERTIFICATE →</span></div>
+        </a>
+        <a href="certs/intro-to-mcp.pdf" target="_blank" rel="noopener" class="cert-card ai reveal" data-cat="AI">
+          <div class="cert-head"><span class="cert-tag ai">AI</span><span class="cert-issuer">Anthropic · Oct 2024</span></div>
+          <div class="cert-title">Introduction to Model Context Protocol</div>
+          <div class="cert-foot"><span class="cert-cta">VIEW CERTIFICATE →</span></div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== 05 // SKILLS ============== -->
+  <section id="skills" style="padding-top:7rem;">
+    <div class="wrap">
+      <header class="section-head reveal">
+        <div class="section-eyebrow">05 //</div>
+        <h2 class="section-title">CORE<span class="glow-green" style="color:var(--green)">_SKILLS</span></h2>
+        <div class="gradient-line"></div>
+      </header>
+
+      <div class="skill-grid">
+        <div class="skill reveal">
+          <div class="skill-head"><span class="skill-name">Network Security</span><span class="skill-pct">78%</span></div>
+          <div class="skill-track"><div class="skill-fill" data-level="78"></div></div>
+        </div>
+        <div class="skill reveal delay-1">
+          <div class="skill-head"><span class="skill-name">Incident Detection &amp; Response</span><span class="skill-pct">75%</span></div>
+          <div class="skill-track"><div class="skill-fill" data-level="75"></div></div>
+        </div>
+        <div class="skill reveal delay-1">
+          <div class="skill-head"><span class="skill-name">Linux &amp; SQL</span><span class="skill-pct">72%</span></div>
+          <div class="skill-track"><div class="skill-fill" data-level="72"></div></div>
+        </div>
+        <div class="skill reveal delay-2">
+          <div class="skill-head"><span class="skill-name">Python Automation</span><span class="skill-pct">68%</span></div>
+          <div class="skill-track"><div class="skill-fill" data-level="68"></div></div>
+        </div>
+        <div class="skill reveal delay-2">
+          <div class="skill-head"><span class="skill-name">Threat Analysis</span><span class="skill-pct">74%</span></div>
+          <div class="skill-track"><div class="skill-fill" data-level="74"></div></div>
+        </div>
+        <div class="skill reveal delay-3">
+          <div class="skill-head"><span class="skill-name">AI Tooling &amp; MCP</span><span class="skill-pct">80%</span></div>
+          <div class="skill-track"><div class="skill-fill" data-level="80"></div></div>
+        </div>
+        <div class="skill reveal delay-3">
+          <div class="skill-head"><span class="skill-name">Security Frameworks</span><span class="skill-pct">70%</span></div>
+          <div class="skill-track"><div class="skill-fill" data-level="70"></div></div>
+        </div>
+        <div class="skill reveal delay-4">
+          <div class="skill-head"><span class="skill-name">SIEM / Log Analysis</span><span class="skill-pct">65%</span></div>
+          <div class="skill-track"><div class="skill-fill" data-level="65"></div></div>
+        </div>
+      </div>
+
+      <div class="tools-row reveal">
+        <span class="tool">Wireshark</span>
+        <span class="tool">Nmap</span>
+        <span class="tool">Burp Suite</span>
+        <span class="tool">Splunk</span>
+        <span class="tool">Kali Linux</span>
+        <span class="tool">Python</span>
+        <span class="tool">Docker</span>
+        <span class="tool">Claude API</span>
+        <span class="tool">VirusTotal</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== 06 // CONTACT ============== -->
+  <section id="contact" style="padding-top:7rem;">
+    <div class="wrap">
+      <header class="section-head reveal">
+        <div class="section-eyebrow">06 //</div>
+        <h2 class="section-title">GET IN<span class="glow-green" style="color:var(--green)">_TOUCH</span></h2>
+        <div class="gradient-line"></div>
+      </header>
+
+      <div class="contact-grid">
+        <div class="reveal">
+          <p class="contact-blurb">
+            Open to cybersecurity roles, collaborations, and conversations about
+            AI-integrated security tooling.
+          </p>
+          <div class="contact-term"><span class="pr">$</span> ping charles_wyatt
+<span class="ok">PONG</span> — response: immediate
+STATUS: <span class="acc">open_to_opportunities</span>
+LOCATION: Philippines</div>
+        </div>
+
+        <div class="reveal delay-2">
+          <div class="contact-term"><span class="pr">$</span> cat ./inbox.txt
+<span class="acc">wyattcharles26@gmail.com</span>
+<span class="ok">READY</span> — direct mail only (v1)</div>
+          <a href="mailto:wyattcharles26@gmail.com?subject=hello%20from%20your%20portfolio" class="cmd-btn send-cmd">
+            <span class="pr">$ </span><span class="cmd">./mail</span><span class="arg"> --compose</span>
+          </a>
+        </div>
       </div>
     </div>
   </section>
