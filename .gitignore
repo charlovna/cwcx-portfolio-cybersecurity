@@ -1,0 +1,9 @@
+# Source prompts / design notes — not part of the deployed site
+uploads/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
