@@ -1121,3 +1121,131 @@ footer {
   section { padding: 4.5rem 0; }
   .hero { padding: 6rem 0 4rem; }
 }
+
+/* ============================================================
+   Experience entries
+   ============================================================ */
+.exp-list { display: flex; flex-direction: column; gap: 2.25rem; margin-top: 1rem; }
+.exp-item {
+  border-left: 2px solid var(--green);
+  padding: 0.2rem 0 0.4rem 1.5rem;
+}
+.exp-title {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--text);
+  text-transform: uppercase;
+  margin: 0 0 0.55rem;
+}
+.exp-meta {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  color: var(--green);
+  margin-bottom: 0.3rem;
+}
+.exp-meta .sep { color: var(--muted-dim); margin: 0 0.55rem; }
+.exp-location {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  margin-bottom: 0.9rem;
+}
+.exp-body {
+  font-family: var(--font-body);
+  color: var(--text);
+  line-height: 1.7;
+  max-width: 70ch;
+  margin: 0;
+}
+
+/* ============================================================
+   Skills: core competencies list + tag clouds
+   ============================================================ */
+.skills-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 3rem;
+  margin-top: 1rem;
+}
+@media (max-width: 900px) { .skills-grid { grid-template-columns: 1fr; gap: 2rem; } }
+
+.skills-label {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.22em;
+  color: var(--green);
+  margin-bottom: 1rem;
+}
+.skills-label + .skills-label { margin-top: 1.75rem; }
+
+.comp-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+.comp-item {
+  border: 1px solid var(--border);
+  padding: 0.7rem 0.9rem;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+.comp-item::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  background: var(--green);
+  flex-shrink: 0;
+}
+
+/* Variant of .tool used in "currently learning" */
+.tool.learning {
+  color: var(--green);
+  border-color: rgba(57,255,20,0.4);
+}
+
+/* ============================================================
+   Contact: button row
+   ============================================================ */
+.contact-blurb-line {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-bottom: 1.75rem;
+  letter-spacing: 0.04em;
+}
+.contact-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+.contact-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 0.7rem 1rem;
+  text-decoration: none;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+.contact-link svg { stroke: currentColor; flex-shrink: 0; }
+.contact-link:hover {
+  color: var(--green);
+  border-color: rgba(57,255,20,0.45);
+  background: rgba(57,255,20,0.03);
+}
