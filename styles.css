@@ -471,6 +471,11 @@ section {
   line-height: 1.7;
   color: var(--text);
 }
+.term-body p:not(.quote) {
+  margin: 0 0 1.35em;
+  text-indent: 1.75em;
+}
+.term-body p:not(.quote):last-of-type { margin-bottom: 0; }
 .term-body .prompt {
   display: block;
   font-family: var(--font-mono);
