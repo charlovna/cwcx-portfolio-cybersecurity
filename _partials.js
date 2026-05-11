@@ -1,5 +1,5 @@
 /* ============================================================
-   Shared markup partials — navbar + footer
+   Shared markup partials (navbar + footer)
    Injected at page load so we don't duplicate across files.
    ============================================================ */
 

@@ -1,5 +1,5 @@
 /* ============================================================
-   Charles Wyatt Portfolio — shared client JS
+   Charles Wyatt Portfolio | shared client JS
    ============================================================ */
 
 // ---- Reveal on scroll ----
@@ -145,7 +145,7 @@
       const data = await res.json().catch(() => ({}));
       if (res.ok && data.success) {
         form.reset();
-        showToast('TRANSMISSION RECEIVED — STAND BY');
+        showToast('TRANSMISSION RECEIVED. STAND BY');
       } else {
         showToast('ERR: TRANSMISSION FAILED', 'err');
       }
