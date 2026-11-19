@@ -65,12 +65,14 @@
   const toggle = () => {
     burger.classList.toggle('open');
     drawer.classList.toggle('open');
+    burger.setAttribute('aria-expanded', burger.classList.contains('open') ? 'true' : 'false');
   };
   burger.addEventListener('click', toggle);
   drawer.querySelectorAll('a').forEach((a) =>
     a.addEventListener('click', () => {
       burger.classList.remove('open');
       drawer.classList.remove('open');
+      burger.setAttribute('aria-expanded', 'false');
     })
   );
 })();

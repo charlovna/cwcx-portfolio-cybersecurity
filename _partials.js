@@ -15,9 +15,9 @@ const NAV_HTML = `
       <a href="#skills"         data-nav-anchor="skills">./skills</a>
       <a href="#contact"        data-nav-anchor="contact">./contact</a>
     </div>
-    <div class="nav-hamburger" aria-label="menu">
+    <button class="nav-hamburger" aria-label="Menu" aria-expanded="false">
       <span></span><span></span><span></span>
-    </div>
+    </button>
   </div>
 </nav>
 <div class="mobile-drawer">
@@ -33,8 +33,8 @@ const NAV_HTML = `
 const FOOTER_HTML = `
 <footer>
   <div class="footer-inner">
-    <div><span class="logo">cwcx://</span> CHARLES WYATT &copy; 2025</div>
-    <div class="footer-right">SECURED BY DEFAULT // AI-ASSISTED ANALYSIS</div>
+    <div><span class="logo">cwcx://</span> Charles Wyatt &copy; 2026</div>
+    <div class="footer-right">Secured by default // AI-assisted analysis</div>
   </div>
 </footer>
 `;
