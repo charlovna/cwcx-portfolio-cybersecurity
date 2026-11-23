@@ -269,9 +269,16 @@ code { font-family: var(--font-mono); font-size: 0.875em; background: var(--mint
   .band-peek { position: sticky; bottom: 0; z-index: 3; height: auto; min-height: 56px; padding-bottom: env(safe-area-inset-bottom, 0px); }
   .band-peek .peek-long { display: none; }
   .band-peek .peek-short { display: inline; }
-  .band-peek .peek-arrow { animation: peek-nudge 2.4s var(--ease-out) infinite; }
 }
-@keyframes peek-nudge { 0%, 70%, 100% { transform: translateY(0); } 80% { transform: translateY(3px); } }
+/* Load-up: the label types in (terminal cursor in ink on mustard), then the arrow starts a
+   small scroll cue: it drops and fades out, then slides back in from above. */
+.band-peek .cursor { width: 6px; height: 12px; background: var(--on-mustard); vertical-align: -1px; margin-left: 1px; margin-right: -7px; }
+.band-peek.is-cueing .peek-arrow { animation: peek-cue 2.2s var(--ease-out) infinite; }
+@keyframes peek-cue {
+  0% { transform: translateY(-4px); opacity: 0; }
+  14%, 52% { transform: translateY(0); opacity: 1; }
+  72%, 100% { transform: translateY(5px); opacity: 0; }
+}
 
 /* ---------- EVT 01 About ---------- */
 .about-stage { position: relative; z-index: 2; background: var(--mustard); color: var(--on-mustard); min-height: 100vh; min-height: 100svh; display: flex; flex-direction: column; justify-content: center; padding: var(--space-24) 0; }
