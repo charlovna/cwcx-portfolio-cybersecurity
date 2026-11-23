@@ -1,0 +1,69 @@
+/* ============================================================
+   Design tokens: Mint Development design system.
+   Source of truth: tokens.json. No hex values outside this file.
+   ============================================================ */
+:root {
+  /* Colour */
+  --surface: #FFFFFF;
+  --surface-raised: #F4F1E8;
+  --ink: #22272D;
+  --ink-muted: #4B5151;
+  --line: #E1D5B7;
+  --line-strong: #22272D;
+  --red: #D1372F;
+  --on-red: #FFFFFF;
+  --red-text: #D1372F;
+  --mustard: #F8DA25;
+  --on-mustard: #22272D;
+  --green: #047565;
+  --green-deep: #0A5B3E;
+  --on-green: #FFFFFF;
+  --on-green-line: rgba(255, 255, 255, 0.25);
+  --mint-tint: #E6F2EE;
+  --code-surface: #22272D;
+  --code-surface-deep: #0E1013;
+  --code-ink: #FFFFFF;
+  --code-comment: #9AA3A3;
+  --code-keyword: #F8DA25;
+  --code-string: #8FD8C3;
+  --code-line: #3A4046;
+  --focus: #047565;
+  --focus-on-dark: #F8DA25;
+
+  /* Type */
+  --font-display: Archivo, "Arial Black", "Helvetica Neue", Arial, sans-serif;
+  --font-sans: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --display-stretch: 125%;
+
+  /* Spacing */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-24: 96px;
+
+  /* Radius and borders */
+  --radius-none: 0;
+  --radius-sm: 2px;
+  --border-hairline: 1px;
+  --border-control: 1.5px;
+  --border-rule: 2px;
+
+  /* Layout */
+  --max-width: 1312px;
+  --gutter: var(--space-8);
+  --side: var(--space-16);
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --dur-ui: 160ms;
+}
+
+@media (max-width: 640px) {
+  :root { --side: 20px; }
+}
