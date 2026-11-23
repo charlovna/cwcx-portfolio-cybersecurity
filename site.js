@@ -166,6 +166,8 @@
     /* split typed text into hidden characters before the gate lifts, so nothing flashes */
     var heroTyped = $$('[data-type]').map(splitChars);
     var headTyped = $$('[data-type-head]').map(splitChars);
+    var peekTyped = $$('[data-type-peek]').map(splitChars);
+    if (has('.band-peek .peek-cta')) gsap.set('.band-peek .peek-cta', { opacity: 0, x: 8 });
     if (has('[data-hero-fade], [data-print]')) gsap.set('[data-hero-fade], [data-print]', { opacity: 0 });
     root.classList.remove('motion-pending');
     root.classList.add('motion-ready');
@@ -207,6 +209,26 @@
               .to('[data-stat]', { yPercent: 0, duration: 0.8, stagger: 0.08 }, 0.85);
       }
       heroTl.call(function () { loopType(heroTyped); }, null, '>-0.2');
+      /* EVT 01 strip: label types in once the stats settle, then the CTA and arrow cue arrive */
+      if (peekTyped.length) heroTl.call(function () { typePeek(peekTyped[0]); }, null, 1.1);
+    }
+
+    function typePeek(line) {
+      var cursor = makeCursor();
+      cursor.classList.add('is-typing');
+      placeCursor(cursor, line, 0);
+      var n = 0;
+      var tick = function () {
+        line.chars[n].classList.add('on');
+        n++;
+        placeCursor(cursor, line, n);
+        if (n < line.chars.length) { setTimeout(tick, 45 + Math.random() * 30); return; }
+        cursor.classList.remove('is-typing');
+        setTimeout(function () { cursor.remove(); }, 1100);
+        gsap.to('.band-peek .peek-cta', { opacity: 1, x: 0, duration: 0.5, ease: ease,
+          onComplete: function () { $('.band-peek').classList.add('is-cueing'); } });
+      };
+      tick();
     }
 
     /* Typewriter helpers. Text is split into per-character spans that start hidden
@@ -319,28 +341,41 @@
 
     /* EVT 00 to 01: hero holds while the mustard band slides over it */
     var hero = $('.hero');
-    /* Desktop only: below 1001px the header is position: fixed inside the hero, and the
-       transform ScrollTrigger leaves on a pinned element would carry the header away with it. */
-    if (hero && window.innerWidth > 1000) {
-      ScrollTrigger.create({ trigger: hero, start: 'top top', end: 'bottom top', pin: true, pinSpacing: false });
-    } else if (hero) {
-      /* Phone/tablet: CSS sticky does the hold. A sticky hero is its own stacking context,
-         so the fixed header must live outside it or the mustard band would cover it. */
-      var header = $('[data-header]', hero);
-      if (header) hero.parentNode.parentNode.insertBefore(header, hero.parentNode);
-      var setStick = function () { root.style.setProperty('--hero-stick', Math.min(0, window.innerHeight - hero.offsetHeight) + 'px'); };
-      setStick();
-      window.addEventListener('resize', setStick);
-      ScrollTrigger.addEventListener('refreshInit', setStick);
-      root.classList.add('hero-hold');
-      /* The pinned EVT 01 strip hands off to the rising band: its label fades over the
-         strip's own height so the band never slices through the text. */
-      var peekLabel = $('.band-peek .wrap', hero);
-      var band = $('#evt-01');
-      if (peekLabel && band) {
-        gsap.to(peekLabel, { opacity: 0, ease: 'none',
-          scrollTrigger: { trigger: band, start: 'top bottom', end: 'top bottom-=56', scrub: true } });
-      }
+    var heroHeader = hero && $('[data-header]', hero);
+    /* gsap.matchMedia sets up the mode for the current width and reverts it when the width
+       crosses 1000px (window resize, iPad rotation), so the two setups never mix. */
+    var heroMM = gsap.matchMedia();
+    if (hero) {
+      /* Desktop: GSAP pin. Below 1001px the header is position: fixed, and the transform a
+         pin leaves behind would carry it away, so phones/tablets use the sticky path below. */
+      heroMM.add('(min-width: 1001px)', function () {
+        ScrollTrigger.create({ trigger: hero, start: 'top top', end: 'bottom top', pin: true, pinSpacing: false });
+      });
+      heroMM.add('(max-width: 1000px)', function () {
+        /* CSS sticky does the hold. A sticky hero is its own stacking context, so the fixed
+           header must live outside it or the mustard band would cover it. */
+        if (heroHeader) hero.parentNode.parentNode.insertBefore(heroHeader, hero.parentNode);
+        var setStick = function () { root.style.setProperty('--hero-stick', Math.min(0, window.innerHeight - hero.offsetHeight) + 'px'); };
+        setStick();
+        window.addEventListener('resize', setStick);
+        ScrollTrigger.addEventListener('refreshInit', setStick);
+        root.classList.add('hero-hold');
+        /* The pinned EVT 01 strip hands off to the rising band: its label fades over the
+           strip's own height so the band never slices through the text. */
+        var peekLabel = $('.band-peek .wrap', hero);
+        var band = $('#evt-01');
+        if (peekLabel && band) {
+          gsap.to(peekLabel, { opacity: 0, ease: 'none',
+            scrollTrigger: { trigger: band, start: 'top bottom', end: 'top bottom-=56', scrub: true } });
+        }
+        return function () {
+          window.removeEventListener('resize', setStick);
+          ScrollTrigger.removeEventListener('refreshInit', setStick);
+          root.classList.remove('hero-hold');
+          root.style.removeProperty('--hero-stick');
+          if (heroHeader) hero.insertBefore(heroHeader, hero.firstChild);
+        };
+      });
     }
 
     /* EVT 01: manifesto stays static by design (no scroll effect on the text) */
