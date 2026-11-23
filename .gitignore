@@ -12,3 +12,5 @@ Thumbs.db
 .claude/
 *.tgz
 *writeup*.md
+.agents/
+skills-lock.json

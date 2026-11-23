@@ -118,6 +118,8 @@ code { font-family: var(--font-mono); font-size: 0.875em; background: var(--mint
   transition: transform var(--dur-ui) var(--ease-out);
 }
 .btn:active { transform: scale(0.97); }
+/* With motion on, GSAP owns button transforms; a CSS transition would re-smooth every GSAP frame */
+.motion-ready .btn { transition: none; }
 .btn .btn-label, .btn .btn-arrow { display: inline-block; pointer-events: none; }
 .btn .btn-arrow { margin-left: var(--space-2); }
 .btn-primary { background: var(--red); color: var(--on-red); border: 0; }
@@ -157,8 +159,13 @@ code { font-family: var(--font-mono); font-size: 0.875em; background: var(--mint
 
 .rule-top { border-top: var(--border-rule) solid var(--line-strong); }
 
-.stat { --rule: 1; position: relative; padding-top: var(--space-3); display: flex; flex-direction: column-reverse; gap: var(--space-1); }
-.stat::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: var(--border-rule); background: var(--line-strong); transform: scaleX(var(--rule)); transform-origin: left; }
+.stat { position: relative; padding-top: var(--space-3); display: flex; flex-direction: column-reverse; gap: var(--space-1); }
+.stat::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: var(--border-rule); background: var(--line-strong); transform-origin: left; transition: transform 800ms var(--ease-out); }
+/* Rules draw left to right once site.js adds .is-drawn (a compositor transition, no per-frame style writes) */
+.motion-ready .stats:not(.is-drawn) .stat::before { transform: scaleX(0); }
+.stat:nth-child(2)::before { transition-delay: 80ms; }
+.stat:nth-child(3)::before { transition-delay: 160ms; }
+.stat:nth-child(4)::before { transition-delay: 240ms; }
 .stat dd { overflow: hidden; font-variant-numeric: tabular-nums; }
 .stat dd > span { display: inline-block; }
 .stat dt { font-size: 14px; line-height: 20px; color: var(--ink-muted); }
@@ -213,9 +220,9 @@ code { font-family: var(--font-mono); font-size: 0.875em; background: var(--mint
   font-family: var(--font-mono); font-size: 12px; line-height: 16px; font-weight: 500;
 }
 .rail a { color: var(--ink-muted); text-decoration: none; display: flex; gap: var(--space-2); align-items: center; min-height: 20px; }
-.rail a::before { content: ""; display: block; width: 8px; height: 1px; background: currentColor; transition: width 250ms var(--ease-out); }
+.rail a::before { content: ""; display: block; width: 16px; height: 2px; background: currentColor; transform: scale(0.5); transform-origin: left center; transition: transform 250ms var(--ease-out); }
 .rail a.is-active { color: var(--green); }
-.rail a.is-active::before { width: 16px; height: 2px; }
+.rail a.is-active::before { transform: scale(1); }
 .rail.on-dark a { color: var(--code-comment); }
 .rail.on-dark a.is-active { color: var(--mustard); }
 .rail.on-mustard a, .rail.on-mustard a.is-active { color: var(--on-mustard); }
@@ -251,8 +258,20 @@ code { font-family: var(--font-mono); font-size: 0.875em; background: var(--mint
 .terminal .typed { padding-left: 2ch; text-indent: -2ch; }
 .tw-ch { visibility: hidden; }
 .tw-ch.on { visibility: visible; }
-.band-peek { background: var(--mustard); color: var(--on-mustard); height: 56px; display: flex; align-items: center; }
-.band-peek .wrap { display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 12px; line-height: 16px; font-weight: 500; }
+.band-peek { background: var(--mustard); color: var(--on-mustard); height: 56px; display: flex; align-items: center; text-decoration: none; }
+.band-peek:hover { color: var(--on-mustard); }
+.band-peek .wrap { display: flex; justify-content: space-between; gap: var(--space-4); width: 100%; font-family: var(--font-mono); font-size: 12px; line-height: 16px; font-weight: 500; }
+.band-peek .peek-short { display: none; }
+.band-peek .peek-arrow { display: inline-block; }
+@media (max-width: 1000px) {
+  /* Phones/tablets: the hero is taller than the screen, so the EVT 01 strip rides the bottom
+     edge from the first frame as a tap target, then settles where the band slides in. */
+  .band-peek { position: sticky; bottom: 0; z-index: 3; height: auto; min-height: 56px; padding-bottom: env(safe-area-inset-bottom, 0px); }
+  .band-peek .peek-long { display: none; }
+  .band-peek .peek-short { display: inline; }
+  .band-peek .peek-arrow { animation: peek-nudge 2.4s var(--ease-out) infinite; }
+}
+@keyframes peek-nudge { 0%, 70%, 100% { transform: translateY(0); } 80% { transform: translateY(3px); } }
 
 /* ---------- EVT 01 About ---------- */
 .about-stage { position: relative; z-index: 2; background: var(--mustard); color: var(--on-mustard); min-height: 100vh; min-height: 100svh; display: flex; flex-direction: column; justify-content: center; padding: var(--space-24) 0; }
@@ -316,7 +335,18 @@ code { font-family: var(--font-mono); font-size: 0.875em; background: var(--mint
 .skill-row { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); row-gap: var(--space-3); align-items: center; padding: 20px 0; border-top: var(--border-hairline) solid var(--line); }
 .skill-row:first-child { border-top: var(--border-rule) solid var(--line-strong); }
 .skill-row:last-child { border-bottom: var(--border-hairline) solid var(--line); }
-.skill-track { grid-column: span 9; overflow: hidden; }
+/* clip, not hidden: a hidden box is a scroll container and would capture view() timelines */
+.skill-track { grid-column: span 9; overflow: hidden; overflow: clip; }
+/* EVT 05 drift on the compositor: a scroll-driven CSS animation keeps the line locked to
+   native (incl. iOS momentum) scrolling. site.js sets --drift per line; GSAP is the fallback. */
+.skill-line { --drift: 0px; }
+@supports (animation-timeline: view()) {
+  .motion-ready .skill-line[data-drift] { animation-duration: auto; animation-timing-function: linear; animation-fill-mode: both; animation-timeline: view(); animation-range: cover; }
+  .motion-ready .skill-line[data-drift="left"] { animation-name: drift-left; }
+  .motion-ready .skill-line[data-drift="right"] { animation-name: drift-right; }
+}
+@keyframes drift-left { from { transform: translateX(0); } to { transform: translateX(calc(var(--drift) * -1)); } }
+@keyframes drift-right { from { transform: translateX(calc(var(--drift) * -1)); } to { transform: translateX(0); } }
 .skill-line { display: block; width: max-content; white-space: nowrap; font-family: var(--font-display); font-stretch: var(--display-stretch); font-weight: 800; font-size: clamp(24px, 3vw, 40px); line-height: 1.15; letter-spacing: -0.02em; will-change: transform; }
 .skill-line .dot { color: var(--green); padding: 0 0.3em; }
 .skill-line .dot::after { content: "\200B"; } /* break opportunity once the line wraps on phones */
@@ -325,7 +355,7 @@ code { font-family: var(--font-mono); font-size: 0.875em; background: var(--mint
 .learning { display: flex; flex-direction: column; gap: var(--space-4); background: var(--mint-tint); padding: var(--space-6); }
 .learning .tag { background: var(--surface); border-color: var(--surface); font-size: 14px; line-height: 20px; padding: 6px 10px; }
 @media (max-width: 1000px) { .skill-track, .skill-label { grid-column: 1 / -1; } }
-@media (max-width: 640px) { .skill-line { font-size: 24px; } }
+@media (max-width: 640px) { .skill-line { font-size: 20px; } } /* ~1px sideways per 1px scrolled */
 
 /* ---------- EVT 05 Experience ---------- */
 .timeline { position: relative; }
