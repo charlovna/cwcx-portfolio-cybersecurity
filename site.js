@@ -163,7 +163,6 @@
     /* Hand initial states from CSS to GSAP, then drop the CSS gate */
     var has = function (sel) { return !!document.querySelector(sel); };
     if (has('[data-hero-rise], [data-stat]')) gsap.set('[data-hero-rise], [data-stat]', { y: 0, yPercent: 110 });
-    if (has('.stats .stat')) gsap.set('.stats .stat', { '--rule': 0 });
     /* split typed text into hidden characters before the gate lifts, so nothing flashes */
     var heroTyped = $$('[data-type]').map(splitChars);
     var headTyped = $$('[data-type-head]').map(splitChars);
@@ -188,7 +187,9 @@
           var target = document.getElementById(id.slice(1));
           if (!target) return;
           ev.preventDefault();
-          lenis.scrollTo(target, { offset: -headerOffset(), duration: 1.2 });
+          /* scale with distance: short hops feel instant, long jumps still read as travel */
+          var dist = Math.abs(target.getBoundingClientRect().top - headerOffset());
+          lenis.scrollTo(target, { offset: -headerOffset(), duration: Math.min(1, Math.max(0.45, dist / 4000)) });
           history.replaceState(null, '', id);
         });
       });
@@ -202,7 +203,7 @@
         .to('[data-print]', { opacity: 1, duration: 0.01, stagger: 0.09 }, 0.6);
       /* stats settle in after the buttons: rule draws left to right, number rises under it */
       if (has('.stats .stat')) {
-        heroTl.to('.stats .stat', { '--rule': 1, duration: 0.8, stagger: 0.08 }, 0.75)
+        heroTl.call(function () { $('.stats').classList.add('is-drawn'); }, null, 0.75)
               .to('[data-stat]', { yPercent: 0, duration: 0.8, stagger: 0.08 }, 0.85);
       }
       heroTl.call(function () { loopType(heroTyped); }, null, '>-0.2');
@@ -261,10 +262,15 @@
       if ('IntersectionObserver' in window && heroEl) {
         new IntersectionObserver(function (e) { onScreen = e[0].isIntersecting; }).observe(heroEl);
       }
+      /* A held (pinned/sticky) hero still "intersects" while the band covers it,
+         so also pause once the band is past mid-screen. */
+      var covered = false;
+      if ($('#evt-01')) ScrollTrigger.create({ trigger: '#evt-01', start: 'top 50%',
+        onEnter: function () { covered = true; }, onLeaveBack: function () { covered = false; } });
       var TYPE = 55, HOLD = 2200, BETWEEN = 450;
       var li = 0, n = 0, mode = 'type';
       var tick = function () {
-        if (!onScreen || document.hidden) { setTimeout(tick, 400); return; }
+        if (!onScreen || covered || document.hidden) { setTimeout(tick, 400); return; }
         var line = lines[li];
         if (mode === 'type') {
           cursor.classList.add('is-typing');
@@ -327,6 +333,14 @@
       window.addEventListener('resize', setStick);
       ScrollTrigger.addEventListener('refreshInit', setStick);
       root.classList.add('hero-hold');
+      /* The pinned EVT 01 strip hands off to the rising band: its label fades over the
+         strip's own height so the band never slices through the text. */
+      var peekLabel = $('.band-peek .wrap', hero);
+      var band = $('#evt-01');
+      if (peekLabel && band) {
+        gsap.to(peekLabel, { opacity: 0, ease: 'none',
+          scrollTrigger: { trigger: band, start: 'top bottom', end: 'top bottom-=56', scrub: true } });
+      }
     }
 
     /* EVT 01: manifesto stays static by design (no scroll effect on the text) */
@@ -350,16 +364,24 @@
       gsap.from(row, { opacity: 0, x: -24, duration: 0.5, ease: ease, scrollTrigger: { trigger: row, start: 'top 88%', once: true } });
     });
 
-    /* EVT 05: skill lines drift with scroll, alternating direction (all widths) */
-    {
-      $$('[data-drift]').forEach(function (line) {
-        var track = line.parentElement;
-        var distance = function () { return Math.max(0, line.scrollWidth - track.clientWidth) + 24; };
+    /* EVT 05: skill lines drift with scroll, alternating direction (all widths).
+       Preferred path is the CSS scroll-driven animation in styles.css (compositor, locked to
+       native scroll); JS only measures each line's travel. Older browsers get GSAP with a
+       direct scrub (no smoothing lag). */
+    var drifts = $$('[data-drift]');
+    var driftDistance = function (line) { return Math.max(0, line.scrollWidth - line.parentElement.clientWidth) + 24; };
+    if (window.CSS && CSS.supports('animation-timeline: view()')) {
+      var setDrift = function () { drifts.forEach(function (line) { line.style.setProperty('--drift', driftDistance(line) + 'px'); }); };
+      setDrift();
+      window.addEventListener('resize', setDrift);
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(setDrift);
+    } else {
+      drifts.forEach(function (line) {
         var dir = line.getAttribute('data-drift');
         gsap.fromTo(line,
-          { x: function () { return dir === 'left' ? 0 : -distance(); } },
-          { x: function () { return dir === 'left' ? -distance() : 0; }, ease: 'none',
-            scrollTrigger: { trigger: track, start: 'top bottom', end: 'bottom top', scrub: 0.6, invalidateOnRefresh: true } });
+          { x: function () { return dir === 'left' ? 0 : -driftDistance(line); } },
+          { x: function () { return dir === 'left' ? -driftDistance(line) : 0; }, ease: 'none',
+            scrollTrigger: { trigger: line.parentElement, start: 'top bottom', end: 'bottom top', scrub: true, invalidateOnRefresh: true } });
       });
     }
 
@@ -427,12 +449,16 @@
           tl.to(arrow, { x: 6, duration: 0.18, ease: 'power2.out' }, 0)
             .to(arrow, { x: 0, duration: 0.5, ease: 'power3.out' }, 0.18);
         }
-        ScrollTrigger.create({
-          trigger: btn, start: 'top 90%', end: 'bottom 10%',
-          onEnter: function () { tl.restart(true); },
-          onEnterBack: function () { tl.restart(true); }
+        /* once per page view: a cue, not a nag */
+        ScrollTrigger.create({ trigger: btn, start: 'top 90%', once: true, onEnter: function () { tl.restart(true); } });
+        /* press feedback (CSS :active can't apply once GSAP owns the transform) */
+        btn.addEventListener('pointerdown', function () {
+          tl.progress(1).pause();
+          gsap.to(btn, { scale: 0.97, duration: 0.12, ease: 'power2.out', overwrite: 'auto' });
         });
-        btn.addEventListener('pointerdown', function () { tl.progress(1).pause(); });
+        var release = function () { gsap.to(btn, { scale: 1, duration: 0.2, ease: 'power3.out', overwrite: 'auto' }); };
+        btn.addEventListener('pointerup', release);
+        btn.addEventListener('pointercancel', release);
       });
     }
 
