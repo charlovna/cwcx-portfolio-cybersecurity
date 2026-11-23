@@ -7,3 +7,8 @@ Thumbs.db
 .vscode/
 .idea/
 *.swp
+
+# Local tooling, exports and drafts (not part of the deployed site)
+.claude/
+*.tgz
+*writeup*.md
