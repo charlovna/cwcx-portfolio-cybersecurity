@@ -197,6 +197,12 @@ code { font-family: var(--font-mono); font-size: 0.875em; background: var(--mint
   .site-header.is-open .nav-links a:last-child { border-bottom: 0; }
   .hero { padding-top: var(--header-h); }
   body:has(> .page-header) { padding-top: var(--header-h); }
+
+  /* EVT 00 to 01 hold on phone/tablet: sticky instead of a GSAP pin (no transform, so the
+     fixed header keeps working). site.js moves the header out of the hero first, then sets
+     --hero-stick so a hero taller than the screen holds on its last screenful. */
+  :root { --hero-stick: 0px; }
+  .hero-hold .hero { position: sticky; top: var(--hero-stick); }
 }
 .page-header { border-bottom: var(--border-hairline) solid var(--line); }
 
@@ -319,7 +325,7 @@ code { font-family: var(--font-mono); font-size: 0.875em; background: var(--mint
 .learning { display: flex; flex-direction: column; gap: var(--space-4); background: var(--mint-tint); padding: var(--space-6); }
 .learning .tag { background: var(--surface); border-color: var(--surface); font-size: 14px; line-height: 20px; padding: 6px 10px; }
 @media (max-width: 1000px) { .skill-track, .skill-label { grid-column: 1 / -1; } }
-@media (max-width: 640px) { .skill-line { width: auto; white-space: normal; font-size: 22px; transform: none !important; } }
+@media (max-width: 640px) { .skill-line { font-size: 24px; } }
 
 /* ---------- EVT 05 Experience ---------- */
 .timeline { position: relative; }
