@@ -1,139 +1,78 @@
-# Portfolio design system (Carbon-based type and palette)
+# Portfolio design notes
 
-Handoff spec for the Astro repo. Source of truth for values: `tokens.json` in this canvas. Visual reference: the three boards in this canvas (wordmark and palette, typography, landing).
-
-Provenance: palette, scale and sharp-corner stance follow IBM Carbon (Apache 2.0). No IBM logos, marks or brand assets. Check hex values against `@carbon/colors` before shipping.
-
-Scope of this revamp: typography and palette only. Layout, copy and content structure are out of scope.
+Built on the **Mint Development** design system (Swiss editorial pop). Values live in `tokens.json` and `tokens.css`; `styles.css` uses variables only.
 
 ## Rules
 
-- All colors come from the CSS custom properties below. No hex values outside `src/styles/tokens.css`.
-- Corners are 0px. Exceptions: tags and inline code 2px, monogram tile 12.5% of its size.
-- One primary (blue fill) button per view. Tertiary is a 1.5px blue outline.
-- `display` once per page (landing hero). `heading-1` once per inner page. Section headings are `heading-2`. Never use a larger heading style for a section to get more emphasis.
-- Body text 16px minimum. Overlines are sentence case, never uppercase.
-- Red is for errors only. Never the only signal.
-- Focus: 2px outline, 2px offset, `--focus`; inside bands use `--focus-on-dark`.
-- Touch targets 44px minimum. Respect `prefers-reduced-motion`.
-- Input text on a band uses `--field-ink`, never `--ink` (it inverts in dark).
+- No hex colours outside `tokens.css`. No gradients, no shadows, no left-border accents.
+- Corners are 0. Only tags and inline code use `--radius-sm` (2px).
+- Archivo (width 125) for display and section headings, Inter for reading, JetBrains Mono for tags, IDs and terminal output.
+- One red primary button per view. On green bands the primary is mustard.
+- Never red text on mustard.
+- **Hero lines are two lines at most, strictly.** Headline and intro lines are fixed lines (`white-space: nowrap`) sized with `clamp()` so they never wrap.
+- Touch targets 44px minimum. Focus outline 3px, offset 3px.
 
-## Fonts (self-host, no Google Fonts request)
+## Story structure (one page, seven events)
 
-```
-npm i @fontsource/ibm-plex-sans @fontsource/ibm-plex-mono
-```
+| Event | Section | Motion |
+| --- | --- | --- |
+| EVT 00 sign-in | Hero | Headline rises from masks, terminal prints, stat rules draw and numbers rise, "next big thing" lines type and erase on a loop (paused off-screen), hero holds while the mustard band slides over |
+| EVT 01 profile | About | Manifesto is static (by request); bio and focus areas stagger |
+| EVT 02 write-ups | Selector | Category filter; rows slide in; full reports on `/writeups/` pages |
+| EVT 03 credentials | Certifications | Big count is static; rows slide in; filter All / Security / AI |
+| EVT 04 history | Experience | Ink band; heading column sticks; oldest first, open role last; mustard timeline rule draws, entries light as it reaches them |
+| EVT 05 capabilities | Skills | Tool lines drift sideways with scroll, alternating direction |
+| EVT 06 session open | Contact | Headline types once ("a" white, "session." mustard), profile lines print |
 
-Import weights 300, 400, 600 for Sans and 400, 500 for Mono in the base layout. Fallbacks: `'Helvetica Neue', Arial, sans-serif` and `ui-monospace, Menlo, Consolas, monospace`.
+## Motion
 
-## tokens.css
+- GSAP 3.13.0 (ScrollTrigger) and Lenis 1.3.4 from jsDelivr, pinned versions.
+- Lenis runs on the GSAP ticker and feeds `ScrollTrigger.update`.
+- Ease-out `cubic-bezier(0.23, 1, 0.32, 1)` / `expo.out`. Transform and opacity only.
+- Buttons (fine pointers only): short magnetic pull, label leads, arrow nudges 4px, press scales to 0.96.
+- Touch screens: the main CTA in view (red, or mustard on green) lifts to 1.04 and its arrow slides out, twice, each time it scrolls into view; a tap stops it.
+- Hero "Verify." is teal green (`--green`); red stays reserved for the primary CTA.
+- Typewriters split text into hidden characters that keep their space, so typing never moves the layout; screen readers get the full text.
+- Status pill dot blinks softly (CSS), stopped by reduced motion.
+- An inline head script hides animated elements (`motion-pending`) until `site.js` hands them to GSAP, with a 3s safety timeout.
+- `prefers-reduced-motion` or a failed CDN: no Lenis, no pins, everything shown in its final state; filters, menu and copy still work.
 
-```css
-:root {
-  --font-sans: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
-  --font-mono: 'IBM Plex Mono', ui-monospace, Menlo, Consolas, monospace;
+## Where to edit text
 
-  --surface: #FFFFFF;
-  --surface-raised: #F4F4F4;
-  --ink: #161616;
-  --ink-muted: #525252;
-  --line: #E0E0E0;
-  --line-strong: #161616;
-  --border-control: #8D8D8D;
-  --accent: #0F62FE;
-  --accent-hover: #0353E9;
-  --on-accent: #FFFFFF;
-  --accent-text: #0F62FE;
-  --accent-text-hover: #0043CE;
-  --accent-tint: #EDF5FF;
-  --danger-text: #DA1E28;
-  --success-text: #198038;
-  --warning: #F1C21B;
-  --on-warning: #161616;
-  --band: #161616;
-  --on-band: #F4F4F4;
-  --on-band-muted: #C6C6C6;
-  --band-line: #393939;
-  --band-accent: #78A9FF;
-  --field-bg: #F4F4F4;
-  --field-ink: #161616;
-  --code-surface: #161616;
-  --code-ink: #F4F4F4;
-  --code-comment: #A8A8A8;
-  --code-keyword: #78A9FF;
-  --code-string: #42BE65;
-  --focus: #0F62FE;
-  --focus-on-dark: #FFFFFF;
-}
+All copy is plain HTML. Search the file for the words you want to change and edit them in place.
 
-:root[data-theme='dark'] {
-  --surface: #161616;
-  --surface-raised: #262626;
-  --ink: #F4F4F4;
-  --ink-muted: #C6C6C6;
-  --line: #393939;
-  --line-strong: #F4F4F4;
-  --accent-text: #78A9FF;
-  --accent-text-hover: #A6C8FF;
-  --accent-tint: #001D6C;
-  --danger-text: #FF8389;
-  --success-text: #42BE65;
-  --band: #262626;
-  --band-line: #525252;
-  --code-surface: #000000;
-  --focus: #FFFFFF;
-}
-```
+| What | File | Look for |
+| --- | --- | --- |
+| Hero headline, intro, buttons, stats | `index.html` | `EVT 00 · Hero` |
+| Terminal lines and "next big thing" | `index.html` | `session.log` (typed lines are the `data-type` spans) |
+| Manifesto, bio, facts, focus areas | `index.html` | `EVT 01 · About` |
+| Write-up selector, featured summary | `index.html` | `EVT 02 · Write-ups` |
+| Certificates (dates, names, links) | `index.html` | `data-cert-list` (one `<li>` per cert; update the filter counts if you add one) |
+| Experience timeline | `index.html` | `EVT 04 · Experience` (keep oldest first, `next` last) |
+| Skills and tools | `index.html` | `EVT 05 · Skills` (update the "N items" label) |
+| Contact text and profile links | `index.html` | `EVT 06 · Contact` |
+| Write-ups list page | `writeups/index.html` | `data-filter-target="index"` |
+| Entra report | `writeups/entra-iam-lab.html` | section comments `01` to `06` |
+| Page titles and search descriptions | each page's `<head>` | `<title>`, `meta name="description"` |
 
-Ship light first. Wire dark through `data-theme` on `<html>` only after the light pass is reviewed.
+Run `node scripts/check.mjs` after editing. Keep hero lines short: the check fails if a hero line would need a third line.
 
-## Type scale
+## Adding a write-up
 
-| Token | Size / line | Weight | Tracking | Use |
-|---|---|---|---|---|
-| display | 60 / 70 (fluid 2.5 to 3.75rem at 1.17) | 300 Sans | 0 | Landing hero, once |
-| heading-1 | 42 / 50 | 300 Sans | 0 | Inner-page title, once |
-| heading-2 | 32 / 40 (fluid 1.75 to 2rem) | 400 Sans | 0 | Section headings, metrics |
-| heading-3 | 28 / 36 (fluid 1.5 to 1.75rem) | 400 Sans | 0 | Row titles, pull quotes |
-| heading-4 | 20 / 28 | 600 Sans | 0 | Step and card titles |
-| body-lg | 20 / 28 | 400 Sans | 0 | Lead paragraphs |
-| body | 16 / 24 | 400 Sans | 0.16px | Default, max 65ch |
-| body-sm | 14 / 20 | 400 Sans | 0.16px | Tables, helper text, ink-muted |
-| label | 14 / 18 | 400 Sans | 0.16px | Nav, buttons, form labels (table headers 600) |
-| overline | 12 / 16 | 600 Sans | 0.32px | Meta lines, accent-text |
-| caption | 12 / 16 | 400 Sans | 0.32px | ink-muted, never critical info |
-| code | 14 / 20 | 400 Mono | 0.32px | Code and terminals |
-| tag | 12 / 16 | 400 Mono | 0.32px | Stack tags, IDs |
+1. Create `writeups/<slug>.html` from `writeups/entra-iam-lab.html`.
+2. Add a row to `writeups/index.html` with `data-cat` and `data-level`, and update the filter counts.
+3. On `index.html`, add the row to the matching `.wu-group` (or un-disable that category's chip and add a group), update counts, the hero stat and the footer line.
 
-## Wordmark
-
-"Mint" Plex Sans 600 in `--accent-text`, "Development" Plex Sans 300 in `--ink`, 0.3em apart, tracking -0.01em. Reversed on a band: "Mint" in `--band-accent`, "Development" in `--on-band`. Reversed on blue: both white. Monogram: white "M" plus a cursor bar on an `--accent` tile.
-
-## Build order
-
-1. `tokens.css`, fonts, global base styles (body, headings, links, focus, reduced motion).
-2. Layout shell: header with wordmark and nav, footer, section bands.
-3. Shared components: buttons (primary, tertiary), chips, tags, table, code panel, form field, case row.
-4. Pages. Then the residue audit and the acceptance checks below.
-
-## Residue audit (must return nothing)
+## Checks
 
 ```
-grep -rEn "#D1372F|#F8DA25|#047565|#0A5B3E|#E1D5B7|#F4F1E8|#4B5151|#22272D|#E6F2EE|#8FD8C3|#9AA3A3" src public
-grep -rEin "archivo|jetbrains|inter\b|orbitron|neon|glitch|scanline|glow|text-shadow" src public
-grep -rEn "#[0-9a-fA-F]{3,8}\b" src --include=*.astro --include=*.css --include=*.ts --include=*.tsx --include=*.md --include=*.mdx | grep -v "src/styles/tokens.css"
+node scripts/check.mjs          # static: links, anchors, ids, a11y basics, token-only CSS, hero rule
+node scripts/check.mjs --net    # also confirms every CDN URL returns 200
+node scripts/serve.mjs          # local server on http://127.0.0.1:4173
 ```
 
-Review each hit of the last command by hand: content in markdown (for example a hex value quoted in a writeup) is fine.
+With the server running, paste this into the browser console on any page and width for runtime checks (sideways scroll, clipped hero lines, touch targets, motion state):
 
-## Acceptance checks
-
-- Every text and UI pair meets the ratios in `tokens.json`. Thin margins to watch: accent-text on surface-raised 4.55:1, border-control on surface-raised 3.02:1.
-- Keyboard: every control reachable, focus visible on surface, band and accent sections.
-- 320px width: no horizontal scroll except inside tables and code blocks.
-- Lighthouse accessibility 100, performance not worse than the current site.
-- OG image and favicon use the new wordmark and monogram.
-
-## Hosting note
-
-GitHub Pages cannot set response headers. For a security portfolio, host on Cloudflare Pages or Netlify and ship a `_headers` file with at least a Content-Security-Policy, `X-Content-Type-Options`, a `Referrer-Policy`, and `Permissions-Policy`. Self-hosting the fonts keeps the CSP tight.
+```
+await (await fetch('/scripts/browser-check.js')).text().then(eval)
+```

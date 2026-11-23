@@ -1,61 +1,69 @@
 /* ============================================================
-   Design tokens. Palette and scale after IBM Carbon (Apache 2.0).
-   Source of truth: DESIGN.md and tokens.json. No hex values
-   outside this file. Light is the default theme; dark is opt-in
-   via <html data-theme="dark"> once it has been reviewed.
+   Design tokens: Mint Development design system.
+   Source of truth: tokens.json. No hex values outside this file.
    ============================================================ */
-
 :root {
-  --font-sans: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
-  --font-mono: 'IBM Plex Mono', ui-monospace, Menlo, Consolas, monospace;
-
+  /* Colour */
   --surface: #FFFFFF;
-  --surface-raised: #F4F4F4;
-  --ink: #161616;
-  --ink-muted: #525252;
-  --line: #E0E0E0;
-  --line-strong: #161616;
-  --border-control: #8D8D8D;
-  --accent: #0F62FE;
-  --accent-hover: #0353E9;
-  --on-accent: #FFFFFF;
-  --accent-text: #0F62FE;
-  --accent-text-hover: #0043CE;
-  --accent-tint: #EDF5FF;
-  --danger-text: #DA1E28;
-  --success-text: #198038;
-  --warning: #F1C21B;
-  --on-warning: #161616;
-  --band: #161616;
-  --on-band: #F4F4F4;
-  --on-band-muted: #C6C6C6;
-  --band-line: #393939;
-  --band-accent: #78A9FF;
-  --field-bg: #F4F4F4;
-  --field-ink: #161616;
-  --code-surface: #161616;
-  --code-ink: #F4F4F4;
-  --code-comment: #A8A8A8;
-  --code-keyword: #78A9FF;
-  --code-string: #42BE65;
-  --focus: #0F62FE;
-  --focus-on-dark: #FFFFFF;
+  --surface-raised: #F4F1E8;
+  --ink: #22272D;
+  --ink-muted: #4B5151;
+  --line: #E1D5B7;
+  --line-strong: #22272D;
+  --red: #D1372F;
+  --on-red: #FFFFFF;
+  --red-text: #D1372F;
+  --mustard: #F8DA25;
+  --on-mustard: #22272D;
+  --green: #047565;
+  --green-deep: #0A5B3E;
+  --on-green: #FFFFFF;
+  --on-green-line: rgba(255, 255, 255, 0.25);
+  --mint-tint: #E6F2EE;
+  --code-surface: #22272D;
+  --code-surface-deep: #0E1013;
+  --code-ink: #FFFFFF;
+  --code-comment: #9AA3A3;
+  --code-keyword: #F8DA25;
+  --code-string: #8FD8C3;
+  --code-line: #3A4046;
+  --focus: #047565;
+  --focus-on-dark: #F8DA25;
+
+  /* Type */
+  --font-display: Archivo, "Arial Black", "Helvetica Neue", Arial, sans-serif;
+  --font-sans: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --display-stretch: 125%;
+
+  /* Spacing */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-24: 96px;
+
+  /* Radius and borders */
+  --radius-none: 0;
+  --radius-sm: 2px;
+  --border-hairline: 1px;
+  --border-control: 1.5px;
+  --border-rule: 2px;
+
+  /* Layout */
+  --max-width: 1312px;
+  --gutter: var(--space-8);
+  --side: var(--space-16);
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --dur-ui: 160ms;
 }
 
-:root[data-theme='dark'] {
-  --surface: #161616;
-  --surface-raised: #262626;
-  --ink: #F4F4F4;
-  --ink-muted: #C6C6C6;
-  --line: #393939;
-  --line-strong: #F4F4F4;
-  --accent-text: #78A9FF;
-  --accent-text-hover: #A6C8FF;
-  --accent-tint: #001D6C;
-  --danger-text: #FF8389;
-  --success-text: #42BE65;
-  --band: #262626;
-  --band-line: #525252;
-  --code-surface: #000000;
-  --focus: #FFFFFF;
+@media (max-width: 640px) {
+  :root { --side: 20px; }
 }

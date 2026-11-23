@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Microsoft Entra ID IAM Lab | Charles Wyatt</title>
+  <meta name="description" content="Identity and access management lab for a simulated 150-employee company: dynamic groups, scoped admin roles, SAML SSO, Conditional Access MFA and a scripted Joiner-Mover-Leaver lifecycle, validated through the logs." />
+  <meta property="og:title" content="Microsoft Entra ID IAM Lab | Charles Wyatt" />
+  <meta property="og:type" content="article" />
+  <meta name="theme-color" content="#FFFFFF" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.3.4/dist/lenis.css" />
+  <link rel="stylesheet" href="../tokens.css" />
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="progress" aria-hidden="true"><span data-progress></span></div>
+
+  <header class="site-header page-header" data-header>
+    <div class="wrap">
+      <a class="wordmark" href="../index.html"><span class="first">Charles</span> <span class="last">Wyatt</span></a>
+      <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav" data-menu-btn>menu</button>
+      <nav class="nav-links" id="site-nav" aria-label="Main">
+        <a href="./" aria-current="page">Write-ups</a>
+        <a href="../index.html#evt-01">About</a>
+        <a href="../index.html#evt-03">Credentials</a>
+        <a href="../index.html#evt-06">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="article">
+    <!-- Title -->
+    <div class="col stack gap-6">
+      <div class="crumbs">
+        <a class="back-link" href="../index.html#evt-02">← back to portfolio</a>
+        <span class="mono muted" aria-hidden="true">/</span>
+        <a class="back-link" href="./">all write-ups</a>
+      </div>
+      <div class="tag-row">
+        <span class="tag tag-ink">project</span>
+        <span class="tag tag-tint">iam</span>
+        <span class="tag">microsoft entra id</span>
+        <span class="tag">nov 2026</span>
+      </div>
+      <h1 class="page-title">Microsoft Entra ID IAM Lab</h1>
+      <p class="lead measure">Designed and tested identity and access management for Meridian Logistics Corp, a simulated 150-employee freight company. Dynamic groups, scoped admin roles, SAML SSO, Conditional Access MFA, and a scripted Joiner-Mover-Leaver lifecycle, each validated through the logs.</p>
+      <p><a class="btn btn-secondary" href="https://docs.google.com/document/d/1kEI7SORnDd3daDRm8qM91Bh8IMvLJNmEF5buxnaUyFw/edit?usp=sharing" target="_blank" rel="noopener"><span class="btn-label">Full documentation</span> <span class="btn-arrow" aria-hidden="true">↗</span><span class="sr-only"> (Google Docs, opens in a new tab)</span></a></p>
+    </div>
+
+    <!-- Lab report panel -->
+    <div class="col">
+      <section class="report" aria-labelledby="report-h">
+        <div class="report-head">
+          <h2 class="overline" id="report-h">Lab report</h2>
+          <span class="mono">LAB-2026-1119</span>
+        </div>
+        <dl class="report-meta">
+          <div><dt>Scope</dt><dd>150 users</dd></div>
+          <div><dt>Marking</dt><dd>TLP:CLEAR</dd></div>
+          <div><dt>Analyst</dt><dd>c.wyatt</dd></div>
+          <div><dt>Timeline</dt><dd>Oct–Nov 2026</dd></div>
+          <div><dt>Status</dt><dd class="ok">COMPLETED</dd></div>
+        </dl>
+        <div class="stack gap-4" style="padding: var(--space-6) 20px 0">
+          <h3 class="overline" style="color: var(--ink-muted)">Build timeline</h3>
+        </div>
+        <ol class="steps">
+          <li class="steps-line" aria-hidden="true" data-steps-line></li>
+          <li class="step"><span class="step-num">01</span><span class="stack"><b>Harden the tenant</b><span>Security defaults replaced with Conditional Access</span></span></li>
+          <li class="step"><span class="step-num">02</span><span class="stack"><b>Group by department</b><span>Five dynamic groups with rules on user.department</span></span></li>
+          <li class="step"><span class="step-num">03</span><span class="stack"><b>Grant through groups</b><span>Licensing, SAML SSO and scoped admin roles</span></span></li>
+          <li class="step"><span class="step-num hl">04</span><span class="stack"><b>Enforce sign-in policy</b><span>Three policies, report-only first, then on</span></span></li>
+          <li class="step"><span class="step-num">05</span><span class="stack"><b>Run the lifecycle</b><span>Joiner, mover and leaver, all by script</span></span></li>
+          <li class="step"><span class="step-num">06</span><span class="stack"><b>Prove it in the logs</b><span>132 interactive and 1,547 non-interactive sign-ins reviewed</span></span></li>
+        </ol>
+      </section>
+    </div>
+
+    <!-- Tools -->
+    <div class="col stack gap-3">
+      <h2 class="overline">Tools used</h2>
+      <div class="tag-row">
+        <span class="tag">Microsoft Entra ID</span><span class="tag">Microsoft 365 E5 (trial)</span><span class="tag">Microsoft Graph PowerShell</span><span class="tag">PowerShell 7</span><span class="tag">Entra SAML Toolkit</span>
+      </div>
+    </div>
+
+    <!-- 01 Architecture -->
+    <section class="col" aria-labelledby="s1" data-reveal>
+      <div class="sec prose">
+        <span class="sec-num">01</span>
+        <h2 class="h2" id="s1">Architecture</h2>
+        <p>One attribute drives access. A user's department places them in a dynamic security group, and the group carries their licence and app access. Conditional Access sits in front of every sign-in, and the logs record the result.</p>
+<pre class="code-block"><span class="t-key"># access flow</span>
+<span class="t-prompt">JML scripts</span> (Graph PowerShell + CSV)
+  └─ Users (10 base + 2 scripted joiners)
+       └─ user.department → <span class="t-val">SG-IT · SG-Finance · SG-HR · SG-Operations · SG-Sales</span>
+            ├─ Group-based licensing (M365 E5, incl. Entra ID P2)
+            ├─ Meridian Freight Tracker (SAML SSO) ← SG-Operations, SG-Sales
+            └─ Scoped roles (Helpdesk Admin on AU-Operations, Security Reader)
+  └─ <span class="t-prompt">Conditional Access</span>: CA001 MFA · CA002 block legacy · CA003 admin MFA
+       └─ Sign-in and audit logs</pre>
+      </div>
+    </section>
+
+    <!-- 02 What I built -->
+    <section class="col" aria-labelledby="s2" data-reveal>
+      <div class="sec">
+        <span class="sec-num">02</span>
+        <h2 class="h2" id="s2">What I built</h2>
+        <div class="table-wrap">
+          <table class="table">
+            <thead><tr><th scope="col">Control</th><th scope="col">Business reason</th><th scope="col">Implementation</th></tr></thead>
+            <tbody>
+              <tr><td>Dynamic groups</td><td>Access follows the HR record</td><td>Five department groups on user.department</td></tr>
+              <tr><td>Group-based licensing</td><td>New staff get software without a ticket</td><td>M365 E5 assigned to groups, usage location set</td></tr>
+              <tr><td>Scoped admin roles</td><td>Helpdesk resets passwords for one team only</td><td>Helpdesk Admin on an Administrative Unit; Security Reader for audit</td></tr>
+              <tr><td>SAML SSO</td><td>One sign-in for the freight app</td><td>Gallery SAML app, assignment required, two groups</td></tr>
+              <tr><td>Conditional Access</td><td>MFA everywhere, no legacy protocols</td><td>Three policies, report-only then on; break-glass excluded</td></tr>
+              <tr><td>Access-block test</td><td>Prove a policy can stop access</td><td>Temporary block on one user and app (53003), then removed</td></tr>
+              <tr><td>Joiner-Mover-Leaver</td><td>Accounts change with the job</td><td>CSV-driven Graph PowerShell for each stage</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="shots">
+          <figure class="shot-fig"><img src="img/entra-saml-app-properties.png" width="1284" height="886" loading="lazy" alt="Entra admin center, Meridian Freight Tracker properties: enabled for sign-in, assignment required, SAML reply URL set" /><figcaption>Gallery SAML app configured as Meridian Freight Tracker. Assignment required is on.</figcaption></figure>
+          <figure class="shot-fig"><img src="img/entra-saml-app-assignment.png" width="1620" height="420" loading="lazy" alt="Meridian Freight Tracker users and groups: SG-Operations and SG-Sales assigned the msiam_access role" /><figcaption>Access granted to two groups only, SG-Operations and SG-Sales. No direct user assignments.</figcaption></figure>
+          <figure class="shot-fig"><img src="img/entra-saml-toolkit-config.png" width="1160" height="487" loading="lazy" alt="SAML Toolkit configuration page listing SP-initiated login URLs and assertion consumer service URLs" /><figcaption>Service-provider side of the SSO test: login and ACS URLs in the SAML Toolkit.</figcaption></figure>
+          <figure class="shot-fig"><img src="img/entra-au-helpdesk-pim.png" width="1650" height="864" loading="lazy" alt="Privileged Identity Management add assignment: Helpdesk Administrator scoped to the AU-Operations administrative unit" /><figcaption>Helpdesk Administrator scoped to the AU-Operations administrative unit through PIM. Addresses blurred.</figcaption></figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- 03 Lifecycle -->
+    <section class="col" aria-labelledby="s3" data-reveal>
+      <div class="sec prose">
+        <span class="sec-num">03</span>
+        <h2 class="h2" id="s3">Joiner-Mover-Leaver lifecycle</h2>
+        <p><b>Joiner.</b> A CSV and a PowerShell script created two users with department, job title and a forced-change temporary password. Licences arrived through group membership about a minute later, with no manual step.</p>
+        <p><b>Mover.</b> One command changed a user's department from Sales to Finance. Group membership, licence and app access followed within seconds.</p>
+        <p><b>Leaver.</b> The account was disabled, all sessions revoked, and the department set to "Former Employee". A later sign-in failed with error <code>50057</code>.</p>
+      </div>
+    </section>
+
+    <!-- 04 Log review -->
+    <section class="col" aria-labelledby="s4" data-reveal>
+      <div class="sec prose">
+        <span class="sec-num">04</span>
+        <h2 class="h2" id="s4">Log review findings</h2>
+        <p>I exported 132 interactive and 1,547 non-interactive sign-ins plus the audit log, and checked what each control actually did.</p>
+        <ul class="findings">
+          <li><span class="code">CA on</span><span>Policies took effect the moment they switched from report-only to on.</span></li>
+          <li><span class="code">50074</span><span>Users without MFA were forced to register, then signed in.</span></li>
+          <li><span class="code">53003</span><span>The targeted block worked and was reversible.</span></li>
+          <li><span class="code">10 fails</span><span>No brute-force pattern: four users, never more than four in a row, no lockouts.</span></li>
+          <li><span class="code">50057</span><span>The leaver was locked out about an hour after offboarding.</span></li>
+          <li><span class="code">50105</span><span>App assignment was enforced for users outside the assigned groups.</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 05 Challenges -->
+    <section class="col" aria-labelledby="s5" data-reveal>
+      <div class="sec">
+        <span class="sec-num">05</span>
+        <h2 class="h2" id="s5">Challenges and fixes</h2>
+        <div class="table-wrap">
+          <table class="table">
+            <thead><tr><th scope="col">Issue</th><th scope="col">Cause</th><th scope="col">Fix</th></tr></thead>
+            <tbody>
+              <tr><td>Graph PowerShell blocked (530035)</td><td>Security defaults still on</td><td>Replaced with Conditional Access</td></tr>
+              <tr><td>Consent error (65001)</td><td>No admin consent for the Graph app</td><td>Granted tenant consent</td></tr>
+              <tr><td>Device-code login failed</td><td>Windows PowerShell 5.1 limit</td><td>Moved to PowerShell 7</td></tr>
+              <tr><td>SAML certificate greyed out</td><td>Required SAML fields empty</td><td>Saved placeholders, then real values</td></tr>
+              <tr><td>Licence assignment missing in Entra</td><td>Group licensing lives in the M365 admin center</td><td>Assigned there after setting usage location</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 06 Skills -->
+    <section class="col" aria-labelledby="s6" data-reveal>
+      <div class="sec">
+        <span class="sec-num">06</span>
+        <h2 class="h2" id="s6">Skills demonstrated</h2>
+        <div class="tag-row">
+          <span class="tag">identity lifecycle</span><span class="tag">rbac</span><span class="tag">least privilege</span><span class="tag">administrative units</span><span class="tag">saml federation</span><span class="tag">conditional access</span><span class="tag">staged rollout</span><span class="tag">graph powershell</span><span class="tag">log analysis</span><span class="tag">entra error codes</span>
+        </div>
+      </div>
+    </section>
+
+    <nav class="col" aria-label="Write-up navigation">
+      <div class="pager">
+        <a href="../index.html#evt-02"><span class="mono" style="color: var(--green)">← back to portfolio</span><span class="h4">Charles Wyatt</span></a>
+        <a class="next" href="./"><span class="mono">all write-ups →</span><span class="h4">Lab reports</span></a>
+      </div>
+    </nav>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.4/dist/lenis.min.js" defer></script>
+  <script src="../site.js" defer></script>
+</body>
+</html>

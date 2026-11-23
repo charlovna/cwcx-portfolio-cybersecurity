@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Write-ups | Charles Wyatt</title>
+  <meta name="description" content="Lab reports by Charles Wyatt: SOC simulations, investigations and identity builds, each ending with proof from the logs." />
+  <meta name="theme-color" content="#FFFFFF" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.3.4/dist/lenis.css" />
+  <link rel="stylesheet" href="../tokens.css" />
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header page-header" data-header>
+    <div class="wrap">
+      <a class="wordmark" href="../index.html"><span class="first">Charles</span> <span class="last">Wyatt</span></a>
+      <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav" data-menu-btn>menu</button>
+      <nav class="nav-links" id="site-nav" aria-label="Main">
+        <a href="./" aria-current="page">Write-ups</a>
+        <a href="../index.html#evt-01">About</a>
+        <a href="../index.html#evt-03">Credentials</a>
+        <a href="../index.html#evt-06">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="wrap stack gap-12" style="padding-top: var(--space-16); padding-bottom: var(--space-24)">
+    <div class="grid align-end" style="row-gap: var(--space-6)">
+      <div class="span-7 stack gap-3">
+        <a class="back-link" href="../index.html#evt-02">← back to portfolio</a>
+        <p class="mono" style="color: var(--green)">ls -la ./writeups</p>
+        <h1 class="page-title">Lab reports</h1>
+      </div>
+      <p class="span-5 muted">SOC simulations, investigations and builds. Each report ends with proof from the logs.</p>
+    </div>
+
+    <a class="latest" href="entra-iam-lab.html" data-reveal>
+      <div class="left">
+        <span class="tag tag-mustard" style="align-self: flex-start">latest report</span>
+        <span class="h2" style="font-family: var(--font-display); font-stretch: var(--display-stretch); font-weight: 800">Microsoft Entra ID IAM Lab</span>
+        <span class="tag-row"><span class="tag tag-light">entra id</span><span class="tag tag-light">conditional access</span><span class="tag tag-light">saml sso</span><span class="tag tag-light">graph powershell</span></span>
+      </div>
+      <div class="right">
+        <span class="mono">Project · IAM · Nov 2026</span>
+        <span class="body-sm" style="font-weight: 600">Read report ↗</span>
+      </div>
+    </a>
+
+    <div class="stack gap-3">
+      <div class="filter-row" role="group" aria-label="Filter by category" data-filter-group="index-cat" data-filter-for="index" data-filter-attr="cat">
+        <span class="label" aria-hidden="true">cat</span>
+        <button class="chip" type="button" data-filter="all" aria-pressed="true">all (1)</button>
+        <button class="chip" type="button" data-filter="iam" aria-pressed="false">iam (1)</button>
+        <button class="chip" type="button" disabled>soc sim (0)</button>
+        <button class="chip" type="button" disabled>malware/ir (0)</button>
+        <button class="chip" type="button" disabled>forensics (0)</button>
+        <button class="chip" type="button" disabled>threat intel (0)</button>
+        <button class="chip" type="button" disabled>log analysis (0)</button>
+      </div>
+      <div class="filter-row" role="group" aria-label="Filter by level" data-filter-group="index-level" data-filter-for="index" data-filter-attr="level">
+        <span class="label" aria-hidden="true">level</span>
+        <button class="chip" type="button" data-filter="all" aria-pressed="true">all (1)</button>
+        <button class="chip" type="button" disabled>easy (0)</button>
+        <button class="chip" type="button" disabled>medium (0)</button>
+        <button class="chip" type="button" data-filter="project" aria-pressed="false">project (1)</button>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table class="table index-table">
+        <caption class="sr-only">All write-ups</caption>
+        <thead>
+          <tr>
+            <th scope="col">Mode</th>
+            <th scope="col">Category</th>
+            <th scope="col">Level</th>
+            <th scope="col">Report</th>
+            <th scope="col">Date</th>
+          </tr>
+        </thead>
+        <tbody data-filter-target="index">
+          <tr data-cat="iam" data-level="project">
+            <td class="mono-cell">-rw-r--r--</td>
+            <td><span class="tag tag-tint">IAM</span></td>
+            <td><span class="tag">Project</span></td>
+            <td><a class="name" href="entra-iam-lab.html">Microsoft Entra ID IAM Lab <span aria-hidden="true">↗</span></a></td>
+            <td class="mono-cell">2026-11-19</td>
+          </tr>
+          <tr>
+            <td colspan="5" class="queued" style="font-weight: 400"><span class="t-prompt">$</span> ls ./writeups/queued<br />SOC simulations and TryHackMe investigations land here as each report is finished.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.4/dist/lenis.min.js" defer></script>
+  <script src="../site.js" defer></script>
+</body>
+</html>
