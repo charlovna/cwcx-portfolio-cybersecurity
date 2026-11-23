@@ -317,6 +317,16 @@
        transform ScrollTrigger leaves on a pinned element would carry the header away with it. */
     if (hero && window.innerWidth > 1000) {
       ScrollTrigger.create({ trigger: hero, start: 'top top', end: 'bottom top', pin: true, pinSpacing: false });
+    } else if (hero) {
+      /* Phone/tablet: CSS sticky does the hold. A sticky hero is its own stacking context,
+         so the fixed header must live outside it or the mustard band would cover it. */
+      var header = $('[data-header]', hero);
+      if (header) hero.parentNode.parentNode.insertBefore(header, hero.parentNode);
+      var setStick = function () { root.style.setProperty('--hero-stick', Math.min(0, window.innerHeight - hero.offsetHeight) + 'px'); };
+      setStick();
+      window.addEventListener('resize', setStick);
+      ScrollTrigger.addEventListener('refreshInit', setStick);
+      root.classList.add('hero-hold');
     }
 
     /* EVT 01: manifesto stays static by design (no scroll effect on the text) */
@@ -340,8 +350,8 @@
       gsap.from(row, { opacity: 0, x: -24, duration: 0.5, ease: ease, scrollTrigger: { trigger: row, start: 'top 88%', once: true } });
     });
 
-    /* EVT 04: skill lines drift with scroll, alternating direction */
-    if (window.innerWidth > 640) {
+    /* EVT 05: skill lines drift with scroll, alternating direction (all widths) */
+    {
       $$('[data-drift]').forEach(function (line) {
         var track = line.parentElement;
         var distance = function () { return Math.max(0, line.scrollWidth - track.clientWidth) + 24; };
